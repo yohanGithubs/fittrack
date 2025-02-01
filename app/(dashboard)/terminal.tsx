@@ -7,12 +7,12 @@ export function Terminal() {
   const [terminalStep, setTerminalStep] = useState(0);
   const [copied, setCopied] = useState(false);
   const terminalSteps = [
-    'git clone https://github.com/leerob/next-saas-starter',
-    'pnpm install',
-    'pnpm db:setup',
-    'pnpm db:migrate',
-    'pnpm db:seed',
-    'pnpm dev 🎉',
+    'Loading FitTrack System...',
+    'Initializing Workout Tracker 🏋️‍♂️',
+    'Analyzing Previous Workouts...',
+    'Calculating Nutrition Goals 🥗',
+    'Setting up Progress Analytics 📊',
+    'FitTrack Ready! Let\'s crush your goals! 💪',
   ];
 
   useEffect(() => {
@@ -20,7 +20,7 @@ export function Terminal() {
       setTerminalStep((prev) =>
         prev < terminalSteps.length - 1 ? prev + 1 : prev
       );
-    }, 500);
+    }, 800); // Slightly slower for better readability
 
     return () => clearTimeout(timer);
   }, [terminalStep]);
@@ -32,7 +32,7 @@ export function Terminal() {
   };
 
   return (
-    <div className="w-full rounded-lg shadow-lg overflow-hidden bg-gray-900 text-white font-mono text-sm relative">
+    <div className="w-full rounded-lg shadow-2xl overflow-hidden bg-black/80 backdrop-blur-sm text-white font-mono text-sm relative border border-red-600/20">
       <div className="p-4">
         <div className="flex justify-between items-center mb-4">
           <div className="flex space-x-2">
@@ -42,7 +42,7 @@ export function Terminal() {
           </div>
           <button
             onClick={copyToClipboard}
-            className="text-gray-400 hover:text-white transition-colors"
+            className="text-gray-400 hover:text-red-500 transition-colors"
             aria-label="Copy to clipboard"
           >
             {copied ? (
@@ -56,13 +56,29 @@ export function Terminal() {
           {terminalSteps.map((step, index) => (
             <div
               key={index}
-              className={`${index > terminalStep ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
+              className={`
+                ${index > terminalStep ? 'opacity-0' : 'opacity-100'}
+                transition-opacity duration-500
+                ${index === terminalStep ? 'text-red-500' : 'text-gray-300'}
+              `}
             >
-              <span className="text-green-400">$</span> {step}
+              <span className="text-red-500 mr-2">{'>'}</span> 
+              {step}
+              {index === terminalStep && (
+                <span className="inline-block animate-pulse ml-1">_</span>
+              )}
             </div>
           ))}
         </div>
+        <div className="mt-4 pt-4 border-t border-red-600/20">
+          <div className="text-xs text-gray-400">
+            System Status: <span className="text-green-500">Active</span>
+            <span className="float-right text-red-500">FitTrack v1.0</span>
+          </div>
+        </div>
       </div>
+      {/* Add a subtle gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-red-600/5 to-transparent pointer-events-none"></div>
     </div>
   );
 }
